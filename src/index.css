@@ -1,0 +1,12 @@
+.bg-light {
+    background-color: hsl(148, 38%, 91%);
+}
+.text-light {
+    color: hsl(148, 38%, 91%);
+}
+.text-primary {
+    color: hsl(169, 82%, 27%);
+}
+.bg-primary {
+    background-color: hsl(169, 82%, 27%);;
+}
