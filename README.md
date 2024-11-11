@@ -19,6 +19,6 @@ https://datosgobar.github.io/georef-ar-api/open-api/
 
 ## Instalación
 
-- Clonar repositorio git clone
+- Clonar repositorio git clone https://github.com/slopezdev1/form-interview.git
 - Instalar dependencias - npm install
 - Ejecutar servidor - npm run dev
