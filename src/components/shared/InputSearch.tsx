@@ -1,34 +1,38 @@
 // React
-import React, { useEffect, useRef, useState } from 'react';
-
-// Interfaces
-import { IKeyValue } from '../../interfaces/valueForm.interface';
+import React, { useEffect, useRef, useState } from "react";
 
 // Utils resources
-import { getItems } from '../../utils/formatterItems';
+import { getItems } from "../../utils/formatterItems";
+
+// Hook
+import { FieldError, UseFormSetValue } from "react-hook-form";
+
+// Interfaces
+import { IKeyValue } from "../../interfaces/valueForm.interface";
 
 interface InputSearchProps {
   results: any[];
   label: string;
   placeholder?: string;
-  keyInput?: string,
-  disabled?: boolean,
-  value: string,
-  isFetching?: boolean,
-  handleChangeInput?: (value: IKeyValue) => void
+  name: string;
+  defaultValue: string,
+  disabled?: boolean;
+  isFetching?: boolean;
+  setValue: UseFormSetValue<any>;
+  error?: FieldError;
 }
 
-const InputSearch: React.FC<InputSearchProps> = ({ results, label, disabled, handleChangeInput, isFetching, value }) => {
+const InputSearch: React.FC<InputSearchProps> = (props) => {
+  
   // states
-  const [textSearch, setTextSearch] = useState<string>(value)
   const [filteredItems, setFilteredItems] = useState<IKeyValue[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isTouched, setIsTouched] = useState<boolean>(false);
+  const [textSearch, setTextSearch] = useState<string>(props.defaultValue);
 
   // Ref element
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const items = getItems(results);
+  const items = getItems(props.results);
 
   // Effects
   useEffect(() => {
@@ -37,19 +41,17 @@ const InputSearch: React.FC<InputSearchProps> = ({ results, label, disabled, han
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setTextSearch(value);
+    setTextSearch(value)
 
     if (value) {
-      const results = items.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase())
-      );
+      const results = items.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
       setFilteredItems(results);
       setIsOpen(true);
     } else {
@@ -59,35 +61,35 @@ const InputSearch: React.FC<InputSearchProps> = ({ results, label, disabled, han
   };
 
   const handleSelect = (item: IKeyValue) => {
-    setTextSearch(item.name);
-    handleChangeInput!(item)
+    if (props.setValue) {
+      props.setValue(props.name, { id: item.id, name: item.name });
+      setTextSearch(item.name)
+    }
     setIsOpen(false);
   };
 
-  const handleBlur = () => {
-    setIsTouched(true);
-  };
-
-
   return (
     <div ref={dropdownRef} className="relative h-full w-full flex flex-col gap-1">
-      <label className='text-light text-sm' htmlFor="">{label}</label>
+      <label className="text-light text-sm" htmlFor={props.name}>
+        {props.label}
+      </label>
       <input
-        required
         type="text"
         value={textSearch}
         onChange={handleInputChange}
-        onBlur={handleBlur}
-        className="p-1 rounded w-full"
-        disabled={disabled || isFetching}
-        placeholder={isFetching ? 'Buscando...' : ''}
+        className={`p-1 rounded w-full ${props.error ? 'border-red-500' : ''}`}
+        disabled={props.disabled || props.isFetching}
+        placeholder={props.isFetching ? "Buscando..." : ""}
       />
-      {isTouched && !textSearch && (
-        <div className="text-red-500 text-sm">Este campo es obligatorio.</div>
+      {props.error && (
+        <div className="text-red-500 text-sm">
+          {props.error.message}
+        </div>
       )}
-      {isOpen && !isFetching && filteredItems.length > 0 && (
+
+      {isOpen && !props.isFetching && filteredItems.length > 0 && (
         <ul className="absolute w-full mt-14 border border-gray-300 rounded shadow-md bg-white max-h-40 overflow-y-auto z-10">
-          {filteredItems.map(item => (
+          {filteredItems.map((item) => (
             <li
               key={item.id}
               onClick={() => handleSelect(item)}

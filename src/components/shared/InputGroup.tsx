@@ -1,62 +1,30 @@
-// React
-import React, { ChangeEvent, FocusEvent, useState } from "react"
+//react
+import React from "react";
 
+//hook
+import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 interface InputGroupProps {
-  keyInput: string,
-  label: string,
-  typeInput: string
-  handleChangeInput: (value: string) => void
+  keyInput: string;
+  label: string;
+  typeInput: string;
+  control?: UseFormRegisterReturn;
+  error?:  FieldError;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({ keyInput, label, typeInput, handleChangeInput }) => {
-
-  // states
-  const [error, setError] = useState('');
-
-  // handlers
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setError(validateField(value));
-  };
-  const changeValueInput = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault()
-    handleChangeInput(event.target.value)
-  }
-
-  // Functions
-  const validateField = (value: string) => {
-    if (typeInput === 'email' && value) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(value) ? '' : 'Por favor, ingrese un correo electrónico válido.';
-    }
-    if (!value) {
-      return 'Este campo es obligatorio.';
-    }
-    return '';
-  };
-
-
-
-
-
+const InputGroup: React.FC<InputGroupProps> = ({ keyInput, label, typeInput, control, error }) => {
   return (
-    <>
-      <div className="flex flex-col gap-1">
-        <label htmlFor={keyInput} className="text-sm text-light">{label}</label>
-        <input
-          required
-          onChange={changeValueInput}
-          onBlur={handleBlur}
-          id="{keyInput}"
-          name="{keyInput}"
-          type={typeInput}
-          className="rounded p-1"
-        />
-        {error && <div className="text-red-500 text-sm">{error}</div>}
-      </div>
-    </>
-  )
-}
+    <div className="flex flex-col gap-1">
+      <label htmlFor={keyInput} className="text-sm text-light">{label}</label>
+      <input
+        id={keyInput}
+        type={typeInput}
+        className={`rounded p-1 ${error ? "border border-red-500" : ""}`}
+        {...control}
+      />
+      {error && <div className="text-red-500 text-sm">{error.message}</div>}
+    </div>
+  );
+};
 
-export default InputGroup
+export default InputGroup;

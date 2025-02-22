@@ -1,8 +1,6 @@
-// React
-import { FormEvent, useState } from "react"
-
 // Hooks
 import { useQuery } from "@tanstack/react-query"
+import { FieldError, useForm } from "react-hook-form";
 
 // Components
 import InputGroup from "./shared/InputGroup"
@@ -14,66 +12,73 @@ import { getDepartments } from "../services/departments.services"
 import { getLocalities } from "../services/locality,services"
 
 // Utils Resources
-import { hasObjectValue } from "../utils/hasObjectValue"
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-// Interfaces
-import { IKeyValue, IValueForm } from "../interfaces/valueForm.interface"
-
-
+//Interfaces
 interface IFormContactProps {
     handleExecuteForm: (confirm: boolean) => void
 }
 
-const FormContact: React.FC<IFormContactProps> = ({handleExecuteForm}) => {
-    // states
-    const [valueForm, setValueForm] = useState<IValueForm>({
-        name: '',
-        surname: '',
-        email: '',
-        country: {
-            name: 'Argentina',
-            id: '06'
-        },
-        city: {
-            name: '',
-            id: ''
-        },
-        department: {
-            name: '',
-            id: ''
-        },
-        locality: {
-            name: '',
-            id: ''
-        },
+const schema = yup.object().shape({
+    name: yup.string().required("El nombre es obligatorio"),
+    surname: yup.string().required("El apellido es obligatorio"),
+    email: yup.string().email("Email inválido").required("El email es obligatorio"),
+    country: yup.object().shape({
+        name: yup.string().required("Selecciona un país"),
+        id: yup.string().required(),
+    }),
+    city: yup.object().shape({
+        name: yup.string().required("Selecciona una provincia"),
+        id: yup.string().required(),
+    }),
+    department: yup.object().shape({
+        name: yup.string().required("Selecciona un departamento"),
+        id: yup.string().required(),
+    }),
+    locality: yup.object().shape({
+        name: yup.string().required("Selecciona una localidad"),
+        id: yup.string().required(),
+    }),
+});
 
-    })
+const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
+
+    // hook
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name: "ds",
+            surname: "",
+            email: "",
+            country: { name: "Argentina", id: "06" },
+            city: { name: "", id: "" },
+            department: { name: "", id: "" },
+            locality: { name: "", id: "" },
+        },
+    });
 
     // queries
     const { data: citiesData, isLoading } = useQuery({ queryKey: ['cities'], queryFn: getCities })
-    const { data: departmentData, isFetching: isFetchingDepartmentData } = useQuery({ queryKey: ['department', valueForm.city.id], queryFn: () => getDepartments(valueForm.city.id), enabled: !!valueForm.city.id })
-    const { data: localityData, isFetching: isFetchingLocalityData } = useQuery({ queryKey: ['locality', valueForm.department.id], queryFn: () => getLocalities(valueForm.department.id), enabled: !!valueForm.department.id })
+    const { data: departmentData, isFetching: isFetchingDepartmentData } = useQuery({ queryKey: ['department', watch("city.id")], queryFn: () => getDepartments(watch("city.id")), enabled: !!watch("city.id") })
+    const { data: localityData, isFetching: isFetchingLocalityData } = useQuery({ 
+        queryKey: ['locality', watch("department.id")], 
+        queryFn: () => getLocalities(watch("department.id")), 
+        enabled: !!watch("department.id") 
+    })
 
     // handles
-    const handleOnSubmit = (event: FormEvent) => {
-        event.preventDefault()
-        handleExecuteForm(hasValid())
+    const onSubmit = (data: any) => {
+        console.log("Datos enviados:", data);
+        props.handleExecuteForm(true);
+    };
 
-    }
-
-    // Logic
-    const updateValueForm = (newValue: string | IKeyValue, key: keyof IValueForm) => {
-        setValueForm({
-            ...valueForm,
-            [key]: newValue
-        })
-    }
-
-    const hasValid = (): boolean => {
-        return hasObjectValue(valueForm)
-    }
-
-    
     if (isLoading) return <><span className={isLoading && 'animate-pulse'}>Cargando...</span></>
 
     return (
@@ -81,45 +86,74 @@ const FormContact: React.FC<IFormContactProps> = ({handleExecuteForm}) => {
 
             <div className="w-96 bg-primary flex flex-col gap-3 p-6 rounded-lg">
                 <h1 className="text-base text-bold text-light">Contacto</h1>
-                <form onSubmit={handleOnSubmit} className="w-full flex flex-col gap-3">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-3">
                     <div className="w-full grid grid-cols-2 grid-rows-1 gap-2">
                         {/* Dates */}
-                        <InputGroup handleChangeInput={(event) => updateValueForm(event, 'name')} label="Nombre" keyInput="name" typeInput="text" />
-                        <InputGroup handleChangeInput={(event) => updateValueForm(event, 'surname')} label="Apellido" keyInput="surname" typeInput="text" />
+                        <InputGroup
+                            label="Nombre"
+                            keyInput="name"
+                            typeInput="text"
+                            control={register("name")}
+                            error={errors.name as FieldError}
+                        />
+
+                        <InputGroup
+                            label="Apellido"
+                            keyInput="surname"
+                            typeInput="text"
+                            control={register("surname")}
+                            error={errors.surname as FieldError}
+                        />
                     </div>
-                    <InputGroup handleChangeInput={(event) => updateValueForm(event, 'email')} label="Correo electrónico" keyInput="email" typeInput="email" />
+
+                    <InputGroup
+                        label="Correo electrónico"
+                        keyInput="email"
+                        typeInput="email"
+                        control={register("email")}
+                        error={errors.email as FieldError}
+                    />
 
                     {/* Address */}
                     <div className="w-full grid grid-cols-2 grid-rows-1 gap-2">
+
                         <InputSearch
                             label="País"
+                            name="country"
                             results={[]}
-                            key={'country'}
                             disabled={true}
-                            value={valueForm.country.name}
+                            setValue={setValue}
+                            defaultValue={watch('country').name}
+                            error={errors.country as FieldError}
                         />
+
                         <InputSearch
-                            handleChangeInput={(event) => updateValueForm(event, 'city')}
                             label="Provincia"
+                            name="city" 
                             results={citiesData && 'provincias' in citiesData ? citiesData.provincias : []}
-                            key={'city'}
-                            value={valueForm.city.name}
+                            setValue={setValue}
+                            defaultValue={watch('city').name}
+                            error={errors.city?.name as FieldError}
                         />
+
                         <InputSearch
-                            handleChangeInput={(event) => updateValueForm(event, 'department')}
                             label="Departamento"
-                            isFetching={isFetchingDepartmentData}
+                            name="department"
                             results={departmentData && 'departamentos' in departmentData ? departmentData.departamentos : []}
-                            key={'department'}
-                            value={valueForm.department.name}
+                            setValue={setValue}
+                            defaultValue={watch('department').name}
+                            error={errors.department?.name as FieldError} 
+                            isFetching={isFetchingDepartmentData}
                         />
+
                         <InputSearch
-                            handleChangeInput={(event) => updateValueForm(event, 'locality')}
                             label="Localidad"
-                            isFetching={isFetchingLocalityData}
+                            name="locality"
                             results={localityData && 'localidades' in localityData ? localityData.localidades : []}
-                            key={'locality'}
-                            value={valueForm.locality.name}
+                            setValue={setValue}
+                            defaultValue={watch('locality').name}
+                            error={errors.locality?.name as FieldError}
+                            isFetching={isFetchingLocalityData}
                         />
                     </div>
 
