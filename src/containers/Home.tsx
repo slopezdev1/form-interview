@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="h-screen w-full bg-light">
+      <div className="h-screen w-full bg-orange-200">
         <div className="flex items-center justify-center w-full h-full">
           <FormContact handleExecuteForm={executeRequest} />
         </div>
