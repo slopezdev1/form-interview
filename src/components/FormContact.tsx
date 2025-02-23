@@ -5,6 +5,8 @@ import { FieldError, useForm } from "react-hook-form";
 // Components
 import InputGroup from "./shared/InputGroup"
 import InputSearch from "./shared/InputSearch"
+import { Button } from '@headlessui/react'
+import { Field, Fieldset, Input, Label, Legend, Select, Textarea } from '@headlessui/react'
 
 // Services
 import { getCities } from "../services/cities.services"
@@ -67,10 +69,10 @@ const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
     // queries
     const { data: citiesData, isLoading } = useQuery({ queryKey: ['cities'], queryFn: getCities })
     const { data: departmentData, isFetching: isFetchingDepartmentData } = useQuery({ queryKey: ['department', watch("city.id")], queryFn: () => getDepartments(watch("city.id")), enabled: !!watch("city.id") })
-    const { data: localityData, isFetching: isFetchingLocalityData } = useQuery({ 
-        queryKey: ['locality', watch("department.id")], 
-        queryFn: () => getLocalities(watch("department.id")), 
-        enabled: !!watch("department.id") 
+    const { data: localityData, isFetching: isFetchingLocalityData } = useQuery({
+        queryKey: ['locality', watch("department.id")],
+        queryFn: () => getLocalities(watch("department.id")),
+        enabled: !!watch("department.id")
     })
 
     // handles
@@ -84,8 +86,37 @@ const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
     return (
         <>
 
-            <div className="w-96 bg-primary flex flex-col gap-3 p-6 rounded-lg">
-                <h1 className="text-base text-bold text-light">Contacto</h1>
+            <div className="w-96 bg-white border border-orange-500 flex flex-col gap-3 p-6 rounded-lg">
+                {/* <Fieldset className="space-y-8">
+                    <Legend className="text-lg font-bold">Contacto</Legend>
+                    <div className="flex items-center justify-between">
+                        <Field>
+                            <Label className="block">Nombre</Label>
+                            <Input className="mt-1 block" name="name" />
+                        </Field>
+                        <Field>
+                            <Label className="block">Apellido</Label>
+                            <Input className="mt-1 block" name="surname" />
+                        </Field>
+                    </div>
+
+                    <Field>
+                        <Label className="block">Correo electrónico</Label>
+                        <Input className="mt-1 block" name="email" />
+                    </Field>
+                    <Field>
+                        <Label className="block">Country</Label>
+                        <Select className="mt-1 block" name="country">
+                            <option>Canada</option>
+                            <option>Mexico</option>
+                            <option>United States</option>
+                        </Select>
+                    </Field>
+                    <Field>
+                        <Label className="block">Delivery notes</Label>
+                        <Textarea className="mt-1 block" name="notes" />
+                    </Field>
+                </Fieldset> */}
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-3">
                     <div className="w-full grid grid-cols-2 grid-rows-1 gap-2">
                         {/* Dates */}
@@ -129,7 +160,7 @@ const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
 
                         <InputSearch
                             label="Provincia"
-                            name="city" 
+                            name="city"
                             results={citiesData && 'provincias' in citiesData ? citiesData.provincias : []}
                             setValue={setValue}
                             defaultValue={watch('city').name}
@@ -142,7 +173,7 @@ const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
                             results={departmentData && 'departamentos' in departmentData ? departmentData.departamentos : []}
                             setValue={setValue}
                             defaultValue={watch('department').name}
-                            error={errors.department?.name as FieldError} 
+                            error={errors.department?.name as FieldError}
                             isFetching={isFetchingDepartmentData}
                         />
 
@@ -158,7 +189,7 @@ const FormContact: React.FC<IFormContactProps> = (props: IFormContactProps) => {
                     </div>
 
                     <div className="w-full flex align-center justify-center mt-2">
-                        <button type="submit" className="p-2 w-64 text-center rounded bg-white text-primary hover:opacity-85 mx-auto">Enviar</button>
+                        <Button type="submit" className="p-2 w-64 text-center rounded bg-orange-500 text-white hover:opacity-85 mx-auto">Enviar</Button>
                     </div>
                 </form>
             </div>

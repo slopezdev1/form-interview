@@ -70,14 +70,14 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
 
   return (
     <div ref={dropdownRef} className="relative h-full w-full flex flex-col gap-1">
-      <label className="text-light text-sm" htmlFor={props.name}>
+      <label className="text-sm" htmlFor={props.name}>
         {props.label}
       </label>
       <input
         type="text"
         value={textSearch}
         onChange={handleInputChange}
-        className={`p-1 rounded w-full ${props.error ? 'border-red-500' : ''}`}
+        className={`p-1 rounded w-full ${props.error ? 'border-red-500' : 'border border-orange-500'}`}
         disabled={props.disabled || props.isFetching}
         placeholder={props.isFetching ? "Buscando..." : ""}
       />
