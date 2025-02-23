@@ -1,18 +1,29 @@
-import { Switch } from '@headlessui/react'
-import { useState } from 'react'
+import { Select } from '@headlessui/react'
+import { ChangeEvent, useEffect } from 'react'
+import { useTranslation } from "react-i18next"
+import { languageCookie } from '../utils/language.cookie'
 
 function LanguageSwticher() {
-  const [enabled, setEnabled] = useState(false)
+    const { i18n, t } = useTranslation()
 
-  return (
-    <Switch
-      checked={enabled}
-      onChange={setEnabled}
-      className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
-    >
-      <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
-    </Switch>
-  )
+    useEffect(() => {
+        const savedLanguage = languageCookie.get()
+        if (savedLanguage && savedLanguage !== i18n.language) {
+            i18n.changeLanguage(savedLanguage)
+        }
+    }, [i18n])
+    
+    const toggleLanguage = (event: ChangeEvent<HTMLSelectElement>) => {
+        i18n.changeLanguage(event.target.value)
+        languageCookie.set(event.target.value)
+    }
+
+    return (
+        <Select name="language" aria-label={t("switchLanguage")} onChange={toggleLanguage}>
+            <option value="en">{t("optionEn")}</option>
+            <option value="es">{t("optionEs")}</option>
+        </Select>
+    )
 }
 
 export default LanguageSwticher
