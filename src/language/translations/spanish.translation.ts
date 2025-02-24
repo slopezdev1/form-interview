@@ -9,4 +9,17 @@ export const esTranslations = {
     loading: "Cargando...",
     fieldRequired: 'Campo requerido',
     emailInvalid: 'Correo electrónico inválido',
+    confirm: "Confirmar",
+    nameField: "Nombre",
+    surnameField: "Apellido",
+    emailField: "Correo electrónico",
+    countryField: "País",
+    cityField: "Provincia",
+    confirmTitle: "¿Estás seguro de confirmar esta dirección?",
+    confirmSubTitle: "Verifica que la ubicación sea correcta",
+    cancel: "Cancelar",
+    hasError: "Ocurrió un error al cargar el mapa",
+    success: '¡Información enviada éxitosamente!',
+    reload: 'Recargar página',
+    search: "Buscando..."
 }

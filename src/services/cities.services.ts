@@ -1,21 +1,15 @@
 import { ICities } from "../interfaces/cities.interface";
-import { ITemplateError } from "../interfaces/templateError.interface";
+// import { ITemplateError } from "../interfaces/templateError.interface";
 import { axiosInstance } from "../utils/axios.client";
 
 
-export const getCities = async (): Promise<ICities | ITemplateError> => {
+export const getCities = async (countryName: string): Promise<any> => {
     try {
-        const response: any = await axiosInstance.get<ICities>("provincias", {
-            params: {
-                orden: 'nombre',
-                aplanar: true,
-                campos: 'estandar',
-                max: 100,
-                formato: 'json'
-            }
+        const response: any = await axiosInstance.post<ICities>("countries/states", {
+            country: countryName
         })
-        return Promise.resolve(response.data as ICities)
-    } catch (error: ITemplateError | unknown) {
-        return error as ITemplateError
+        return Promise.resolve(response.data.data.states)
+    } catch (error: any | unknown) {
+        return error
     }
 }

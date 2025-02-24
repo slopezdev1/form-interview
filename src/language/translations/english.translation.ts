@@ -9,4 +9,17 @@ export const enTranslations = {
     loading: "loading...",
     fieldRequired: 'Field is required',
     emailInvalid: 'Invalid email',
+    confirm: "Confirm",
+    nameField: "Name",
+    surnameField: "Surname",
+    emailField: "Email",
+    countryField: "Country",
+    cityField: "City",
+    confirmTitle: "Are you sure you want to confirm this address?",
+    confirmSubTitle: "Verify that the location is correct",
+    cancel: "Close",
+    hasError: "An error occurred while loading the map",
+    success: 'Information sent successfully!',
+    reload: 'Reload page',
+    search: "Search..."
 }
