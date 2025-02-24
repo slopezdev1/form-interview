@@ -3,7 +3,8 @@ import './css/global.css'
 import App from './App.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import i18n from './language/i18n.ts'
-import { I18nextProvider } from "react-i18next";
+import { I18nextProvider } from "react-i18next"
+import 'leaflet/dist/leaflet.css'
 
 const queryClient = new QueryClient({
     defaultOptions: {
