@@ -1,0 +1,28 @@
+import MapView from "./map.view";
+
+export default function ConfirmationCard() {
+    return (
+        <div className="w-full max-w-2xl backdrop-blur-xl bg-gradient-to-br from-white/80 to-orange-50/90 rounded-xl shadow-lg shadow-orange-200/30 p-8 space-y-6 relative border border-orange-100/50">
+            <div className="space-y-2">
+                <h3 className="text-2xl font-medium bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+                    ¿Estás seguro de confirmar esta dirección?
+                </h3>
+                <p className="text-sm text-orange-600/80">Verifica que la ubicación sea correcta</p>
+            </div>
+
+            <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+                <MapView coordinates={[-32.89084, -68.82717]} />
+            </div>
+
+            <div className="flex gap-4 pt-4">
+                <button className="flex-1 px-4 py-3 rounded-lg border-2 border-orange-200 text-orange-700 font-medium hover:bg-orange-50 focus:ring-2 focus:ring-orange-200 transition-colors">
+                    Cancelar
+                </button>
+                <button className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 focus:ring-2 focus:ring-orange-200 transition-all duration-200 shadow-sm shadow-orange-200/50">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    )
+}
+
