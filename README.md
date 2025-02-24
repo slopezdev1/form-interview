@@ -35,6 +35,6 @@ https://nominatim.openstreetmap.org/
 ## Objetivo
 
 Este proyecto implementa un flujo de formulario que guía al usuario a través de los siguientes pasos:
-    - Ingreso de datos: Captura de información personal y dirección.
-    - Confirmación: Visualización de los datos ingresados junto con un mapa embebido.
-    - Finalización: Simulación de un mensaje de "éxito" o "error" según el resultado del proceso.
+- Ingreso de datos: Captura de información personal y dirección.
+- Confirmación: Visualización de los datos ingresados junto con un mapa embebido.
+- Finalización: Simulación de un mensaje de "éxito" o "error" según el resultado del proceso.
