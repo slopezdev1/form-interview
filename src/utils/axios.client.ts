@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://apis.datos.gob.ar/georef/api/',
+  baseURL: 'https://countriesnow.space/api/v0.1/',
   headers: { 'accept': 'application/json' }
 });
 // TO DO: Manejar error en los services

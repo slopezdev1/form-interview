@@ -1,43 +1,35 @@
 import type React from "react"
-import type { FieldError, UseFormRegisterReturn } from "react-hook-form"
 
 interface InputGroupProps {
-  keyInput: string
+  name: string
   label: string
   typeInput: string
-  control?: UseFormRegisterReturn
-  error?: FieldError
-  className?: string
-  labelClassName?: string
-  inputClassName?: string
+  error?: string,
+  value: string,
+  onSetValue: (value: string) => void
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({
-  keyInput,
-  label,
-  typeInput,
-  control,
-  error,
-  className = "space-y-1.5",
-  labelClassName = "text-sm font-medium text-orange-800 block",
-  inputClassName = "w-full px-3.5 py-2.5 border-2 border-orange-200 rounded-lg bg-white/60 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-colors placeholder:text-orange-300",
-}) => {
+const InputGroup: React.FC<InputGroupProps> = (props: InputGroupProps) => {
+
+  const handleChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    props.onSetValue(event.currentTarget.value);
+  }
   return (
-    <div className={className}>
-      <label htmlFor={keyInput} className={labelClassName}>
-        {label}
+    <div className={"space-y-1.5"}>
+      <label htmlFor={props.name} className={"text-sm font-medium text-orange-800 block"}>
+        {props.label}
       </label>
       <input
-        id={keyInput}
-        type={typeInput}
-        className={`${inputClassName} ${
-          error
-            ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-            : "border-orange-200 focus:border-orange-500 focus:ring-orange-200"
-        }`}
-        {...control}
+        onKeyUp={handleChange}
+        defaultValue={props.value}
+        id={props.name}
+        type={props.typeInput}
+        className={`w-full px-3.5 py-2.5 border-2 border-orange-200 rounded-lg bg-white/60 ${props.error
+          ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+          : "border-orange-200 focus:border-orange-500 focus:ring-orange-200"
+          }`}
       />
-      {error && <div className="text-sm text-red-500 mt-1 animate-fadeIn">{error.message}</div>}
+      {props.error && <div className="text-sm text-red-500 mt-1 animate-fadeIn">{props.error}</div>}
     </div>
   )
 }

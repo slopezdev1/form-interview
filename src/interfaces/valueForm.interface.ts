@@ -2,10 +2,8 @@ export interface IValueForm {
     name: string,
     surname: string,
     email: string,
-    country: IKeyValue,
-    city: IKeyValue,
-    department: IKeyValue
-    locality: IKeyValue
+    country: string | undefined,
+    city: string | undefined,
 }
 export interface IKeyValue {
     id: string,
