@@ -3,16 +3,15 @@ import './App.css'
 // import MapView from './components/map.view'
 import Home from './containers/Home'
 import 'leaflet/dist/leaflet.css'
-import { Layout } from './containers/Layout.container'
+import { Layout } from './containers/layout.container'
 
 function App() {
-  // const buenosAiresCoordinates: [number, number] = [-34.6037, -58.3816]
+
   return (
     <div>
       <Layout>
         <Home />
       </Layout>
-      {/* <MapView coordinates={buenosAiresCoordinates} /> */}
     </div>
   )
 }
