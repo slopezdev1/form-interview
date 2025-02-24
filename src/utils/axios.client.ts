@@ -11,6 +11,5 @@ export const nominatimApi = axios.create({
   baseURL: 'https://nominatim.openstreetmap.org/',
   headers: {
     'Accept': 'application/json',
-    'User-Agent': 'Form Contact'
   }
 })
