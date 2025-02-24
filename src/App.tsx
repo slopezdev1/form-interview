@@ -1,9 +1,10 @@
+//components
 import './App.css'
-// import LanguageSwticher from './components/languageSwitcher.component'
-// import MapView from './components/map.view'
-import Home from './containers/Home'
-import 'leaflet/dist/leaflet.css'
+import Home from './containers/home.container'
 import { Layout } from './containers/layout.container'
+
+//css
+import 'leaflet/dist/leaflet.css'
 
 function App() {
 

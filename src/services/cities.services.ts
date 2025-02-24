@@ -1,5 +1,4 @@
 import { ICities } from "../interfaces/cities.interface";
-// import { ITemplateError } from "../interfaces/templateError.interface";
 import { axiosInstance } from "../utils/axios.client";
 
 

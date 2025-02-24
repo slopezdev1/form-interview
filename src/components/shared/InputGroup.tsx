@@ -14,6 +14,7 @@ const InputGroup: React.FC<InputGroupProps> = (props: InputGroupProps) => {
   const handleChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
     props.onSetValue(event.currentTarget.value);
   }
+  
   return (
     <div className={"space-y-1.5"}>
       <label htmlFor={props.name} className={"text-sm font-medium text-orange-800 block"}>

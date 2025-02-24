@@ -1,6 +1,10 @@
+//hook
 import { useTranslation } from "react-i18next";
+
+//resources
 import MapView from "./map.view";
 
+//interfaces
 interface ConfirmationCardProps {
     lat: number,
     lang: number,
@@ -31,10 +35,10 @@ export default function ConfirmationCard(props: ConfirmationCardProps) {
                 ) : <span> {t("hasError")} </span>
             }
             <div className="flex gap-4 pt-4">
-                <button onClick={props.handleClose} className="flex-1 px-4 py-3 rounded-lg border-2 border-orange-200 text-orange-700 font-medium hover:bg-orange-50 focus:ring-2 focus:ring-orange-200 transition-colors">
+                <button onClick={props.handleClose} className="flex-1 px-4 py-3 rounded-lg border-2 border-orange-200 text-orange-700 font-medium hover:bg-orange-50">
                     {t("cancel")}
                 </button>
-                <button onClick={props.handleConfirm} disabled={props.isLoading || !props.lat && !props.lang} className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 focus:ring-2 focus:ring-orange-200 transition-all duration-200 shadow-sm shadow-orange-200/50">
+                <button onClick={props.handleConfirm} disabled={props.isLoading || !props.lat && !props.lang} className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 shadow-sm shadow-orange-200/50">
                     {t("confirm")}
                 </button>
             </div>

@@ -1,22 +1,28 @@
+//react
 import type React from "react"
+
+//hooks
 import { useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+
+//services
+import { getCities } from "../services/cities.services"
+import { getCountries } from "../services/countries.services"
+//resources
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { formattedCity } from "../utils/formattedCity"
+
 // Components
 import InputGroup from "./shared/InputGroup"
 import InputSearch from "./shared/InputSearch"
-import { useTranslation } from "react-i18next"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { getCities } from "../services/cities.services"
-import { getCountries } from "../services/countries.services"
-import { IValueForm } from "../interfaces/valueForm.interface"
-import { formattedCity } from "../utils/formattedCity"
+
 //Interfaces
+import { IValueForm } from "../interfaces/valueForm.interface"
 interface IFormComponentProps {
   handleSendData: (value: IValueForm) => void
 }
-
-
 
 const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps) => {
   const { t } = useTranslation()
@@ -29,7 +35,6 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
     city: yup.string().required(t("fieldRequired")),
   })
 
-  // hook
   const {
     handleSubmit,
     setValue,
@@ -46,7 +51,6 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
     },
   })
 
-  // // queries
   const { data: countriesData, isFetching: isFetchingCountry } = useQuery({
     queryKey: ["countries"],
     queryFn: getCountries
@@ -57,9 +61,7 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
     enabled: !!watch("country"),
   })
 
-  // handles
   const onSubmit = (data: IValueForm) => {
-    console.log("Datos enviados:", data)
     props.handleSendData(data)
   }
 
@@ -100,7 +102,6 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
                 />
               </div>
 
-              {/* Email */}
               <InputGroup
                 label={t("emailField")}
                 name="email"
@@ -110,7 +111,6 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
                 onSetValue={(newValue: string) => setValue('email', newValue)}
               />
 
-              {/* Ubicación */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InputSearch
                   label={t("countryField")}
@@ -133,10 +133,9 @@ const FormComponent: React.FC<IFormComponentProps> = (props: IFormComponentProps
                 />
               </div>
 
-              {/* Botón Submit */}
               <button
                 type="submit"
-                className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg px-4 py-3 text-sm font-medium hover:from-orange-600 hover:to-orange-700 focus:ring-2 focus:ring-orange-200 transition-all duration-200 shadow-sm shadow-orange-200/50"
+                className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg px-4 py-3 text-sm font-medium hover:from-orange-600 hover:to-orange-700 shadow-sm shadow-orange-200/50"
               >
                 {t("confirm")}
               </button>

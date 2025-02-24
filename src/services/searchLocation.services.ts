@@ -1,4 +1,3 @@
-import { ITemplateError } from "../interfaces/templateError.interface"
 import { nominatimApi } from "../utils/axios.client"
 
 export const getLocationSearch = async (country?: string, city?: string) => {
@@ -6,7 +5,7 @@ export const getLocationSearch = async (country?: string, city?: string) => {
     try {
         const response = await nominatimApi.get(searchUrl)
         return Promise.resolve(response.data)
-    } catch (error: ITemplateError | unknown) {
-        return error as ITemplateError
+    } catch (error: any | unknown) {
+        return error
     }
 }

@@ -1,7 +1,14 @@
+//React
 import { Fragment, useEffect } from 'react'
+
+//Components
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from '@headlessui/react'
 import { Check, ChevronDown, Globe2 } from 'lucide-react'
+
+//Hook
 import { useTranslation } from "react-i18next"
+
+//Resources
 import { languageCookie } from '../utils/language.cookie'
 
 const languages = [

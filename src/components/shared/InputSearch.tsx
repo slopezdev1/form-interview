@@ -1,10 +1,15 @@
-"use client"
-
+//React
 import type React from "react"
 import { useEffect, useRef, useState } from "react"
+
+//Resources
 import { getItems } from "../../utils/formatterItems"
-import type { IKeyValue } from "../../interfaces/valueForm.interface"
+
+//hook
 import { useTranslation } from "react-i18next"
+
+//Interfaces
+import type { IKeyValue } from "../../interfaces/valueForm.interface"
 
 interface InputSearchProps {
   results: IKeyValue[]
@@ -18,12 +23,14 @@ interface InputSearchProps {
 }
 
 const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
-  const { t } = useTranslation()
+  
   const [filteredItems, setFilteredItems] = useState<IKeyValue[]>([])
+  const [items, setItems] = useState<IKeyValue[]>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [textSearch, setTextSearch] = useState<string>(props.value)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,8 +43,8 @@ const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
   }, [])
 
   useEffect(() => {
-    const items = getItems(props.results)
-    if (items) setFilteredItems(items)
+    const formattedItems = getItems(props.results)
+    if (formattedItems) setItems(formattedItems)
   }, [props.results])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +52,7 @@ const InputSearch: React.FC<InputSearchProps> = (props: InputSearchProps) => {
     setTextSearch(value)
 
     if (value) {
-      const results = filteredItems.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+      const results = items.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
       setFilteredItems(results)
       setIsOpen(true)
     } else {

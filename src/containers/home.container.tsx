@@ -1,11 +1,19 @@
-// Components
+//React
 import { useState } from "react";
+
+// Components
 import ConfirmationCard from "../components/confirmationAddress.component";
 import FormComponent from "../components/form.component";
+
+//Hooks
 import { useQuery } from "@tanstack/react-query";
-import { getLocationSearch } from "../services/searchLocation.services";
-import { IValueForm } from "../interfaces/valueForm.interface";
 import { useTranslation } from "react-i18next";
+
+//Services
+import { getLocationSearch } from "../services/searchLocation.services";
+
+//Interfaces
+import { IValueForm } from "../interfaces/valueForm.interface";
 
 const Home = () => {
   const { t } = useTranslation()
@@ -20,7 +28,6 @@ const Home = () => {
     enabled: !!dataForm?.city
   })
 
-  // Logic
   const executeRequest = (data: IValueForm) => {
     if (!data) return
     setDataForm(data)
